@@ -1,7 +1,9 @@
 import hashlib
+import tempfile
+from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from ienv.ienv import hash_and_copy
+from ienv.ienv import backup_file, hash_and_copy
 
 
 def test_hash_and_copy_only_hash():
@@ -28,3 +30,25 @@ def test_hash_and_copy_with_dest():
 
     with open(dest_path, "rb") as f:
         assert f.read() == b"This is another test."
+
+
+def test_backup_file():
+    with tempfile.TemporaryDirectory() as tempdir:
+        source = Path(tempdir) / "source.txt"
+        dest_dir = Path(tempdir) / "backup"
+        dest_dir.mkdir()
+
+        with open(source, "w") as f:
+            f.write("Hello, world!")
+
+        original_sha1 = hash_and_copy(str(source), None)
+
+        backup_file(str(source), str(dest_dir))
+
+        # Verify renaming happened
+        renamed_file = dest_dir / original_sha1
+        assert renamed_file.exists()
+
+        # Verify content is identical
+        with open(renamed_file, "r") as f:
+            assert f.read() == "Hello, world!"

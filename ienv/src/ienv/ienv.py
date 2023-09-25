@@ -44,16 +44,17 @@ def hash_and_copy(source, dest=None):
 
 
 def backup_file(source, dest_dir):
-    dest_file = Path(dest_dir) / random.hex(8)
+    dest_file = Path(dest_dir) / hex(random.getrandbits(128))
+    linked = False
     try:
         # Attempt to hardlink. this might fail
         os.link(source, dest_file)
         # if we did manage to hardlink so no need to copy
-        dest_file = None
+        linked = True
     except OSError:
         # we have to copy the file
         pass
 
-    sha1 = hash_and_copy(source, dest_file)
+    sha1 = hash_and_copy(source, dest_file if not linked else None)
 
-    os.rename(dest_dir, f"{dest_dir / sha1}")
+    os.rename(dest_file, f"{Path(dest_dir) / sha1}")
