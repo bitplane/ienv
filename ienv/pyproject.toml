@@ -28,6 +28,7 @@ dev = [
     "twine",
     "mkdocs",
     "mkdocs-material",
+    "pre-commit",
     "pydoc-markdown"
 ]
 
