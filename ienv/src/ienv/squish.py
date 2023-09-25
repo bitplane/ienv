@@ -1,47 +1,13 @@
-import glob
 import hashlib
 import os
 import random
 import shutil
 from pathlib import Path
 
+from .cache import get_cache_dir, load_venv_list, save_venv_list
+from .venv import get_large_package_files
+
 BUFFER_SIZE = 1024 * 1024 * 10  # 10MB chunks
-MIN_FILE_SIZE = 4096  # 4k
-
-
-def get_cache_dir(prefix="~"):
-    cache_dir = Path(f"{prefix}/.cache/ienv/files").expanduser()
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    return cache_dir
-
-
-def load_venv_list(file_path):
-    if not os.path.exists(file_path):
-        return set()
-    with open(file_path, "r") as f:
-        return set(line.strip() for line in f)
-
-
-def save_venv_list(file_path, venvs):
-    with open(file_path, "w") as f:
-        for venv in venvs:
-            f.write(f"{venv}\n")
-
-
-def get_package_files(venv_dir):
-    lib_dir = Path(venv_dir) / "lib"
-    for python_dir in glob.glob(f"{lib_dir}/python*"):
-        site_packages_dir = Path(python_dir) / "site-packages"
-        if site_packages_dir.exists() and site_packages_dir.is_dir():
-            for root, _, files in os.walk(site_packages_dir):
-                for file in files:
-                    yield Path(root) / file
-
-
-def get_large_package_files(venv_dir):
-    for file_path in get_package_files(venv_dir):
-        if file_path.stat().st_size >= MIN_FILE_SIZE:
-            yield file_path
 
 
 def hash_and_copy(source, dest=None):
@@ -111,7 +77,7 @@ def process_venv(venv_dir):
 
     # Process each package file in the venv
     for file_path in get_large_package_files(venv_dir):
-        print("Processing", file_path)
+        print("...", file_path)
         if not file_path.is_symlink() and not file_path.is_dir():
             backup_path = backup_file(file_path, cache_dir)
             replace_with_symlink(file_path, backup_path)

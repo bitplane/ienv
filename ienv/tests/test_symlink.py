@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from ienv.ienv import replace_with_symlink
+from ienv.squish import replace_with_symlink
 
 
 def test_replace_with_symlink_file_exists():

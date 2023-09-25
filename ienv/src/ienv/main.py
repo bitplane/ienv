@@ -4,7 +4,7 @@ import os
 import sys
 from pathlib import Path
 
-from ienv.ienv import process_venv
+from ienv.squish import process_venv
 
 
 def venv_dir(directory):

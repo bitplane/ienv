@@ -3,7 +3,7 @@ import tempfile
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-from ienv.ienv import backup_file, hash_and_copy
+from ienv.squish import backup_file, hash_and_copy
 
 
 def test_hash_and_copy_only_hash():

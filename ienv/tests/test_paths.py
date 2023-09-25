@@ -4,8 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from ienv.ienv import get_cache_dir, get_package_files, load_venv_list, save_venv_list
+from ienv.cache import get_cache_dir, load_venv_list, save_venv_list
 from ienv.main import venv_dir
+from ienv.venv import get_package_files
 
 
 @pytest.fixture
