@@ -32,7 +32,7 @@ def test_parse_args_both_fail(venv_fixture):
 
 def test_bad_dir(venv_fixture):
     with pytest.raises(SystemExit):
-        parse_args([venv_fixture / "I don't exist and neither do you"])
+        parse_args([venv_fixture + "/I don't exist"])
 
 
 def test_parse_args_none_fail():
