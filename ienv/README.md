@@ -14,8 +14,10 @@ will ever write to them and mess up every venv on your machine. Right?
 
 ## Usage
 
-   pip install ienv
-   ienv .venv
+```shell
+pip install ienv
+ienv .venv
+```
 
 ## Recovery
 
