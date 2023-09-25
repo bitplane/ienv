@@ -1,0 +1,46 @@
+[project]
+name = "ienv"
+description = "Cut down your venv sizes by symlinking all the things"
+version = "0.0.1"
+authors = [
+    { name = "Gareth Davidson", email = "gaz@bitplane.net" }
+]
+
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Public Domain", # WTFPL
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+
+dependencies = [
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "coverage",
+    "build",
+    "twine",
+    "mkdocs",
+    "mkdocs-material",
+    "pydoc-markdown"
+]
+
+[build-system]
+build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.2,<4"]
+
+
+[project.urls]
+"Homepage" = "https://github.com/bitplane/ienv"
+"Bug Tracker" = "https://github.com/bitplane/ienv"
+
+
+[project.scripts]
+ienv = "ienv.main:main"
+
