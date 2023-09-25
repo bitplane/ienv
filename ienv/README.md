@@ -10,7 +10,7 @@ Why not throw caution to the wind and replace everyhing in the site-packages
 dir with symlinks? It's not like you're going to need them anyway. And nobody
 will ever write to them and mess up every venv on your machine. Right?
 
-**!!WARNING!! THIS RECKLESS AND STUPID !!WARNING!!**
+**!!WARNING!! THIS IS RECKLESS AND STUPID !!WARNING!!**
 
 ## Usage
 
