@@ -25,7 +25,9 @@ def venv_dir(directory):
 
 def parse_args(args=sys.argv[1:]):
     parser = argparse.ArgumentParser(
-        description="ienv - shrink your venvs down by symlinking site-packages."
+        description="ienv - shrink your venvs down by symlinking site-packages into\n"
+        "a single directory. Might get you out of a low disk space situation,\n"
+        "but it's utterly reckless and not at all recommended."
     )
 
     group = parser.add_mutually_exclusive_group(required=True)
@@ -45,5 +47,4 @@ def main():
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    print(args)
+    main()

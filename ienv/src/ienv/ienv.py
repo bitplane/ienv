@@ -1,3 +1,4 @@
+import glob
 import hashlib
 import os
 import random
@@ -5,6 +6,7 @@ import shutil
 from pathlib import Path
 
 BUFFER_SIZE = 1024 * 1024 * 10  # 10MB chunks
+MIN_FILE_SIZE = 4096  # 4k
 
 
 def get_cache_dir(prefix="~"):
@@ -27,10 +29,19 @@ def save_venv_list(file_path, venvs):
 
 
 def get_package_files(venv_dir):
-    site_packages_dir = Path(venv_dir) / "lib/python3.8/site-packages"
-    for root, _, files in os.walk(site_packages_dir):
-        for file in files:
-            yield Path(root) / file
+    lib_dir = Path(venv_dir) / "lib"
+    for python_dir in glob.glob(f"{lib_dir}/python*"):
+        site_packages_dir = Path(python_dir) / "site-packages"
+        if site_packages_dir.exists() and site_packages_dir.is_dir():
+            for root, _, files in os.walk(site_packages_dir):
+                for file in files:
+                    yield Path(root) / file
+
+
+def get_large_package_files(venv_dir):
+    for file_path in get_package_files(venv_dir):
+        if file_path.stat().st_size >= MIN_FILE_SIZE:
+            yield file_path
 
 
 def hash_and_copy(source, dest=None):
@@ -99,7 +110,8 @@ def process_venv(venv_dir):
     save_venv_list(cache_dir / "venvs.txt", venv_list)
 
     # Process each package file in the venv
-    for file_path in get_package_files(venv_dir):
+    for file_path in get_large_package_files(venv_dir):
+        print("Processing", file_path)
         if not file_path.is_symlink() and not file_path.is_dir():
             backup_path = backup_file(file_path, cache_dir)
             replace_with_symlink(file_path, backup_path)
