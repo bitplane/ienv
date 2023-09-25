@@ -1,6 +1,7 @@
 import hashlib
 import os
 import random
+import shutil
 from pathlib import Path
 
 BUFFER_SIZE = 1024 * 1024 * 10  # 10MB chunks
@@ -13,6 +14,8 @@ def get_cache_dir(prefix="~"):
 
 
 def load_venv_list(file_path):
+    if not os.path.exists(file_path):
+        return set()
     with open(file_path, "r") as f:
         return set(line.strip() for line in f)
 
@@ -57,4 +60,46 @@ def backup_file(source, dest_dir):
 
     sha1 = hash_and_copy(source, dest_file if not linked else None)
 
-    os.rename(dest_file, f"{Path(dest_dir) / sha1}")
+    output_path = Path(dest_dir) / sha1
+
+    os.rename(dest_file, output_path)
+
+    return output_path
+
+
+def replace_with_symlink(source, dest):
+    source = Path(source).absolute()
+    dest = Path(dest).absolute()
+    symlink_path = source.with_suffix(".ienv.lnk")
+
+    # Step 1: Create symlink
+    symlink_path.symlink_to(dest)
+
+    # Step 2: Copy attributes
+    stat_info = source.stat()
+    os.utime(symlink_path, (stat_info.st_atime, stat_info.st_mtime))
+
+    # Linux: preserve permission bits
+    if os.name != "nt":
+        shutil.copymode(source, symlink_path)
+
+    # Step 3: Move the symlink over the source file
+    os.replace(symlink_path, source)
+
+
+def process_venv(venv_dir):
+    venv_dir = Path(venv_dir).resolve()  # Making sure it's an absolute path
+
+    # Ensure cache directory exists and load venv list
+    cache_dir = get_cache_dir()
+    venv_list = load_venv_list(cache_dir / "venvs.txt")
+
+    # Add the venv to the list and save it
+    venv_list.add(str(venv_dir))
+    save_venv_list(cache_dir / "venvs.txt", venv_list)
+
+    # Process each package file in the venv
+    for file_path in get_package_files(venv_dir):
+        if not file_path.is_symlink() and not file_path.is_dir():
+            backup_path = backup_file(file_path, cache_dir)
+            replace_with_symlink(file_path, backup_path)

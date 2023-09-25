@@ -4,6 +4,8 @@ import os
 import sys
 from pathlib import Path
 
+from ienv.ienv import process_venv
+
 
 def venv_dir(directory):
     """
@@ -35,7 +37,11 @@ def parse_args(args=sys.argv[1:]):
 
 def main():
     args = parse_args()
-    print(args)
+
+    if args.stats:
+        raise NotImplementedError("Stats not implemented yet.")
+    else:
+        process_venv(args.venv_dir)
 
 
 if __name__ == "__main__":
