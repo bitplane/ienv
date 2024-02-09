@@ -1,7 +1,7 @@
 exclude: '^merge-files/tests/e2e/test-data/.*'
 repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
     -   id: check-toml
     -   id: check-symlinks
@@ -11,29 +11,25 @@ repos:
     -   id: mixed-line-ending
     -   id: trailing-whitespace
 -   repo: https://github.com/psf/black
-    rev: 23.3.0
+    rev: 24.1.1
     hooks:
     -   id: black
 -   repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
     -   id: isort
         args: [--line-length=88]
 -   repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
+    rev: 7.0.0
     hooks:
     -   id: flake8
         args: ['--config=.flake8']
 -   repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.9.0.2
+    rev: v0.9.0.6
     hooks:
     -   id: shellcheck
         args: [-eSC1091]
 -   repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.9
+    rev: v0.9.17
     hooks:
     -   id: pymarkdown
--   repo: https://github.com/cmake-lint/cmake-lint
-    rev: 1.4.2
-    hooks:
-    -   id: cmakelint

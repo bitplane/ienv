@@ -4,9 +4,9 @@ from pathlib import Path
 from ienv.squish import replace_with_symlink
 
 
-def test_replace_with_symlink_file_exists():
-    src = Path("test_file.txt")
-    dest = Path("dest_file.txt")
+def test_replace_with_symlink_file_exists(tmpdir):
+    src = Path(tmpdir / "test_file.txt")
+    dest = Path(tmpdir / "dest_file.txt")
 
     src.write_text("Hello")
     dest.write_text("World")
@@ -17,9 +17,9 @@ def test_replace_with_symlink_file_exists():
     assert src.resolve() == dest.absolute()
 
 
-def test_replace_with_symlink_preserve_attributes():
-    src = Path("test_file.txt")
-    dest = Path("dest_file.txt")
+def test_replace_with_symlink_preserve_attributes(tmpdir):
+    src = Path(tmpdir / "test_file.txt")
+    dest = Path(tmpdir / "dest_file.txt")
 
     src.write_text("Hello")
     dest.write_text("World")
