@@ -1,7 +1,7 @@
 [project]
 name = "ienv"
 description = "Cut down your venv sizes by symlinking all the things"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
     { name = "Gareth Davidson", email = "gaz@bitplane.net" }
 ]
