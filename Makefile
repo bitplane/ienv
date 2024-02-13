@@ -36,10 +36,10 @@ release: build/release.sh ## publish to pypi
 
 # Caching doesn't work if we depend on PHONY targets
 
-.docs/index.html: .venv/.installed-dev build/docs.sh mkdocs.yml $(shell find -name '*.md')
+.docs/index.html: .venv/.installed-dev build/docs.sh mkdocs.yml $(shell find . -name '*.md')
 	build/docs.sh
 
-.venv/.installed: */pyproject.toml .venv/bin/activate build/install.sh $(shell find ienv/src -name '*.py')
+.venv/.installed: */pyproject.toml .venv/bin/activate build/install.sh $(shell find . ienv/src -name '*.py')
 	build/install.sh
 
 .venv/.installed-dev: */pyproject.toml .venv/bin/activate build/install-dev.sh
