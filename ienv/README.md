@@ -1,4 +1,4 @@
-# ienv
+# 📦 ienv
 
 **!!WARNING!! THIS IS A ONE WAY PROCESS !!WARNING!!**
 
@@ -12,21 +12,21 @@ will ever write to them and mess up every venv on your machine. Right?
 
 **!!WARNING!! THIS IS RECKLESS AND STUPID !!WARNING!!**
 
-## Usage
+## ▶️ Usage
 
 ```shell
 pip install ienv
 ienv .venv
 ```
 
-## Recovery
+## 🛟 Recovery
 
 **Pull requests welcome!**
 
 All the files are there, I've just not written anything to bring them back yet.
 Ever, probably.
 
-## Credits
+## 🪪 Credits
 
 Mostly written by ChatGPT just to see if it could do it. With a bit of guidance
 it actually could, but it can't learn like that so it's like a student that
@@ -34,8 +34,14 @@ nods along and you think it's listening and it's really just playing along and
 tricking you into doing its homework. But to be honest it was either that or
 copilot anyway.
 
-## License
+## ⚖️ License
 
 They say you get what you pay for, sometimes less. This is one of those times.
 As free software distributed under the WTFPL (with one additional clause); this
 is one of the times when you pay for what you get.
+
+## 🔗 Links
+
+* 🏠 [home](https://bitplane.net/dev/python/ienv)
+* 🐱 [github](https://github.com/bitplane/ienv)
+* 🐍 [pypi](https://pypi.org/project/ienv)
