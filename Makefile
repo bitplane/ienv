@@ -1,9 +1,9 @@
 # the things that don't have output files or run every time
 .PHONY: help all install test dev coverage clean \
-		pre-commit update-pre-commit
+		pre-commit update-pre-commit dist
 
 
-# SOURCE_FILES := $(shell find . -type f -name '*.py')
+PROJECT_NAME := ienv
 
 
 all: dev coverage  ## builds everything
@@ -13,43 +13,44 @@ install: .venv/.installed  ## installs the venv and the project packages
 dev: .venv/.installed-dev pre-commit  ## prepare local repo and venv for dev
 
 test: .venv/.installed-dev  ## run the project's tests
-	build/test.sh
+	scripts/test.sh $(PROJECT_NAME)
 
-coverage: .venv/.installed-dev build/coverage.sh  ## build the html coverage report
-	build/coverage.sh
+coverage: .venv/.installed-dev scripts/coverage.sh  ## build the html coverage report
+	scripts/coverage.sh $(PROJECT_NAME)
 
-docs: .docs/index.html ## build the documentation
+docs: scripts/docs.sh docs/index.md README.md ## build the documentation
+	scripts/docs.sh
 
 clean:  ## delete caches and the venv
-	build/clean.sh
+	scripts/clean.sh
 
 pre-commit: .git/hooks/pre-commit  ## install pre-commit into the git repo
 
-update-pre-commit: build/update-pre-commit.sh  ## autoupdate pre-commit
-	build/update-pre-commit.sh
+update-pre-commit: scripts/update-pre-commit.sh  ## autoupdate pre-commit
+	scripts/update-pre-commit.sh
 
-dist: build/dist.sh ## build the distributable files
-	build/dist.sh
+dist: scripts/dist.sh ## build the distributable files
+	scripts/dist.sh $(PROJECT_NAME)
 
-release: build/release.sh ## publish to pypi
-	build/release.sh
+release: scripts/release.sh ## publish to pypi
+	scripts/release.sh $(PROJECT_NAME)
 
 # Caching doesn't work if we depend on PHONY targets
 
-.docs/index.html: .venv/.installed-dev build/docs.sh mkdocs.yml $(shell find . -name '*.md')
-	build/docs.sh
+.docs/index.html: .venv/.installed-dev scripts/docs.sh mkdocs.yml $(shell find -name '*.md')
+	scripts/docs.sh $(PROJECT_NAME)
 
-.venv/.installed: */pyproject.toml .venv/bin/activate build/install.sh $(shell find . ienv/src -name '*.py')
-	build/install.sh
+.venv/.installed: pyproject.toml .venv/bin/activate scripts/install.sh $(shell find src -name '*.py')
+	scripts/install.sh $(PROJECT_NAME)
 
-.venv/.installed-dev: */pyproject.toml .venv/bin/activate build/install-dev.sh
-	build/install-dev.sh
+.venv/.installed-dev: pyproject.toml .venv/bin/activate scripts/install-dev.sh
+	scripts/install-dev.sh $(PROJECT_NAME)
 
 .venv/bin/activate:
-	build/venv.sh
+	scripts/venv.sh
 
-.git/hooks/pre-commit: build/install-pre-commit.sh
-	build/install-pre-commit.sh
+.git/hooks/pre-commit: scripts/install-pre-commit.sh
+	scripts/install-pre-commit.sh
 
 
 help: ## Show this help

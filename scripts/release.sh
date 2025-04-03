@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source .venv/bin/activate
+. ./scripts/activate.sh
 
 # dirty
-VERSION=$(grep -E '^version[[:space:]]*=' ienv/pyproject.toml | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
+VERSION=$(grep -E '^version[[:space:]]*=' pyproject.toml | sed -E 's/.*=[[:space:]]*"([^"]+)".*/\1/')
 TAG_NAME=$(git describe --exact-match --tags HEAD)
 
 if [[ "$VERSION" != "$TAG_NAME" ]]; then
@@ -17,4 +17,4 @@ if [ -z "$PYPI_TOKEN" ]; then
   exit 1
 fi
 
-python3 -m twine upload ienv/dist/* --user=__token__ --password="$PYPI_TOKEN"
+python3 -m twine upload dist/* --user=__token__ --password="$PYPI_TOKEN"

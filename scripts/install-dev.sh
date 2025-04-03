@@ -1,12 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# activate venv
-source .venv/bin/activate
+. ./scripts/activate.sh
 
 set -e
 
 # install our package
-python3 -m pip install -e ./ienv[dev]
+python3 -m pip install -e .[dev]
 
 # let make know that we are installed in user mode
 echo "Installed in dev mode"
